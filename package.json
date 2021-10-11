@@ -17,14 +17,14 @@
     "mac",
     "linux"
   ],
-  "main": "main.js",
+  "main": "indexnasir.js",
   "private": true,
   "scripts": {
     "postinstall": "npm run postinstall:electron && electron-builder install-app-deps",
     "postinstall:web": "node postinstall-web",
     "postinstall:electron": "node postinstall",
     "ng": "ng",
-    "start": "npm run postinstall:electron && npm-run-all -p ng:serve electron:serve",
+    "start": "electron-forge start",
     "browser": "npm run ng:serve:web",
     "build": "npm run postinstall:electron && npm run electron:serve-tsc && ng build",
     "build:dev": "npm run build -- -c dev",
@@ -40,7 +40,9 @@
     "test": "npm run postinstall:web && ng test",
     "e2e": "npm run build:prod && mocha --timeout 300000 --require ts-node/register e2e/**/*.spec.ts",
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.802.2",
@@ -54,6 +56,11 @@
     "@angular/platform-browser": "8.2.2",
     "@angular/platform-browser-dynamic": "8.2.2",
     "@angular/router": "8.2.2",
+    "@electron-forge/cli": "^6.0.0-beta.61",
+    "@electron-forge/maker-deb": "^6.0.0-beta.61",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.61",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.61",
+    "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
@@ -66,8 +73,7 @@
     "codelyzer": "5.1.0",
     "conventional-changelog-cli": "2.0.21",
     "core-js": "3.1.4",
-    "electron": "6.0.2",
-    "electron-builder": "21.2.0",
+    "electron": "^6.0.2",
     "electron-reload": "1.5.0",
     "jasmine-core": "3.4.0",
     "jasmine-spec-reporter": "4.2.1",
@@ -89,5 +95,37 @@
   },
   "engines": {
     "node": ">=10.9.0"
+  },
+  "dependencies": {
+    "electron-localshortcut": "^3.2.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "lock-system": "^3.0.1"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "connected_kiosk_carousel"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }
