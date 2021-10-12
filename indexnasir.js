@@ -1,3 +1,4 @@
+const { validateSecretKey, readKeyChain, writeKeyChain } = require('./index-keychain');
 const { exec, spawn } = require('child_process');
 const { app, globalShortcut } = require('electron')
 const { BrowserWindow } = require('electron')
@@ -8,7 +9,7 @@ let connectionList = null;
 let mainWindow = null;
 let tray = null
 let showHide = true;
-let productionMode = false;
+let productionMode = process.env.production || false;
 function ShowHide() {
   if (showHide == true) {
     mainWindow.hide()
@@ -43,13 +44,13 @@ function createWindow () {
     }
   })
   // and load the index.html of the app.
-  mainWindow.loadURL('http://localhost:4200/checkinout')
+
   mainWindow.on('close', async e => {
     e.preventDefault()
     e.returnValue = true;
   })
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
   // Register a 'CommandOrControl+X' shortcut listener.
  
   const ret = globalShortcut.register('Super+Control+I', function(){
@@ -76,7 +77,7 @@ function createWindow () {
 }
 
 function createTray() {
-  tray = new Tray('./baseline_public_white_24dp.png')
+  tray = new Tray(path.join(__dirname,'./baseline_public_white_24dp.png'))
   tray.setToolTip("Cyber Cafe Session")
   tray.on("click", ()=>{
      ShowHide()
@@ -109,6 +110,18 @@ app.whenReady().then(() => {
         console.log(globalShortcut.isRegistered('CommandOrControl+B'))
 
       
+})
+function loadApp() {
+  mainWindow.loadURL('http://localhost:4200/checkinout')
+}
+readKeyChain((err, data) => {
+  if (err) {
+    mainWindow.loadFile('admin-keychain.html');
+  }
+  else {
+    loadApp();
+     
+  }
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -264,6 +277,21 @@ ipcMain.on('request-agent-log-off', (event, arg) => {
     console.log(stdout);
     
   });
+  
+
+});
+
+
+ipcMain.on('request-agent-keychain-set', (event, arg) => {
+  console.log('Setting keychain', arg);
+  if (arg) {
+    const validKey = validateSecretKey(arg);
+    if (validKey) {
+      writeKeyChain (arg);
+      loadApp();
+    }
+    
+  }
   
 
 });
