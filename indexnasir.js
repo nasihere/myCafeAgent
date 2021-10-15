@@ -111,8 +111,8 @@ app.whenReady().then(() => {
 
       
 })
-function loadApp() {
-  mainWindow.loadURL('http://localhost:4200/checkinout')
+function loadApp(arg) {
+  mainWindow.loadURL('http://localhost:4200/checkinout'+arg)
 }
 readKeyChain((err, data) => {
   if (err) {
@@ -288,7 +288,7 @@ ipcMain.on('request-agent-keychain-set', (event, arg) => {
     const validKey = validateSecretKey(arg);
     if (validKey) {
       writeKeyChain (arg);
-      loadApp();
+      loadApp(arg);
     }
     
   }
