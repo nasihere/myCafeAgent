@@ -17,7 +17,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "package:win": "electron-packager ./ 'cafeagent' --platform=win32 --arch=x64",
-    "build": "rm -rf out && npm run package:win && ng build --configuration=production; git add .; git commit -nm 'Release Branch'; git push"
+    "build": "rm -rf out && rm out.zip && npm run package:win && ng build --configuration=production; git add .; git commit -nm 'Release Branch'; git push"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.61",
