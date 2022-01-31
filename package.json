@@ -12,12 +12,13 @@
   "main": "indexnasir.js",
   "private": true,
   "scripts": {
-    "clean": "rm -rf out ",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
+    "clean": "rm -rf out && rm -rf cafeagent-win32-x64 && rm out.zip",
+    "start": "electron-forge start --platform darwin",
+    "package": "electron-forge package --platform darwin",
     "make": "electron-forge make",
-    "package:win": "electron-packager ./ 'cafeagent' --platform=win32 --arch=x64",
-    "build": "rm -rf out && rm out.zip && npm run package:win && ng build --configuration=production; git add .; git commit -nm 'Release Branch'; git push"
+    "package:win": "electron-packager ./ 'cafeagent' --platform=win32 --arch=x64 --overwrite",
+    "package:mac": "electron-packager ./ 'cafeagent' --platform=darwin --arch=x64 --overwrite",
+    "build": "npm run clean && npm run package:win && ng build --configuration=production; git add .; git commit -nm 'Release Branch'; git push"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.61",
@@ -33,6 +34,7 @@
     "node": ">=10.9.0"
   },
   "dependencies": {
+    "electron-forge": "^5.2.4",
     "electron-localshortcut": "^3.2.1",
     "electron-squirrel-startup": "^1.0.0",
     "yarn": "^1.22.17"

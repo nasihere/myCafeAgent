@@ -60,7 +60,7 @@ function ShowHide() {
   console.log(currentURL)
   if (currentURL && currentURL.indexOf('/checkinout/') != -1) return;
   if (showHide == true) {
-    mainWindow.setSize(100, 40);
+    mainWindow.setSize(90, 40);
     mainWindow.setPosition(Math.round(width *.8 ),0)
     //mainWindow.hide()
     mainWindow.setAlwaysOnTop(true)
@@ -94,7 +94,7 @@ function createWindow () {
     frame: false,
     resizable: false,
     autoHideMenuBar: true,
-    transparent: true,
+    transparent: false,
     kiosk: false,
     webPreferences: {
       nodeIntegration: true,
@@ -134,9 +134,7 @@ function createWindow () {
     mainWindow.destroy()
   })
   const ret2 = globalShortcut.register('Super+Control+A', function(){
-    console.log('Super+Control+A is  pressed')
-    console.log('Show and Hide', showHide)
-    ShowHide();
+    
   })
 
   if (!ret) {
@@ -168,11 +166,11 @@ function createWindow () {
 }
 
 function createTray() {
-  tray = new Tray(path.join(__dirname,'./baseline_public_white_24dp.png'))
-  tray.setToolTip("Cyber Cafe Session")
-  tray.on("click", ()=>{
-     ShowHide()
-  });
+  // tray = new Tray(path.join(__dirname,'./baseline_public_white_24dp.png'))
+  // tray.setToolTip("Cyber Cafe Session")
+  // tray.on("click", ()=>{
+  //    ShowHide()
+  // });
 }
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -240,14 +238,38 @@ ipcMain.on('request-mainprocess-action', (event, arg) => {
 });
 // Attach listener in the main process with the given ID
 ipcMain.on('request-agent-hide', (event, arg) => {
-    console.log('Agent Hide');
-    showHide = true;
-    ShowHide();
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+  let currentURL = mainWindow.webContents.getURL();
+  console.log(currentURL)
+  if (currentURL && currentURL.indexOf('/checkinout/') != -1) return;
+  mainWindow.setSize(90, 40);
+  mainWindow.setPosition(Math.round(width *.8 ),0)
+  //mainWindow.hide()
+  mainWindow.setAlwaysOnTop(true)
+  showHide = false;
+  
+  // Below statement completes the flow
+  mainWindow.moveTop();
+    
+
+  
+
+  
 });
 ipcMain.on('request-agent-show', (event, arg) => {
-  console.log('Agent Show');
-  showHide = false;
-  ShowHide();
+  let currentURL = mainWindow.webContents.getURL();
+
+  if (currentURL && currentURL.indexOf('/checkinout/') != -1) return;
+  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+   
+  mainWindow.setSize(Math.round(width*.9), height);
+  mainWindow.setPosition(Math.round(width *.05 ),0)
+
+  //mainWindow.show();
+  showHide = true;
+  mainWindow.setAlwaysOnTop(true)
+  mainWindow.setPosition(Math.round(width *.05 ),0)
+
 });
 
 ipcMain.on('request-agent-disconnect', (event, arg) => {
@@ -270,8 +292,7 @@ ipcMain.on('request-agent-disconnect', (event, arg) => {
     // Agent Connect Disconnect
     console.log('Agent Show');
   
-    showHide = false;
-    ShowHide();
+
  
 });
 
@@ -306,9 +327,9 @@ ipcMain.on('request-agent-connect', (event, arg) => {
 
 
   // Agent Connect Internet
-  console.log('Agent Closed');
-  showHide = true;
-  ShowHide();
+  // console.log('Agent Closed');
+  // showHide = true;
+  // ShowHide();
 });
 
 
