@@ -25,6 +25,19 @@ exports.writeKeyChain = (content) => {
       
       
 }
+
+exports.cleanKeyChain = (content) => {
+  fs.unlink('init-chain.ini', content, err => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      //file written successfully
+    })
+    
+    
+}
+
 exports.validateSecretKey = (key) => {
   return true;
 }

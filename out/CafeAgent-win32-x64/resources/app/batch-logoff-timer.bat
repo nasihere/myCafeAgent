@@ -1,1 +1,0 @@
-shutdown -t 30 -r

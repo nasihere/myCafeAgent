@@ -1,1 +1,1 @@
-netsh interface show interface |findstr "Connected"
+#netsh interface show interface |findstr "Connected"

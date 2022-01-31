@@ -3,7 +3,68 @@
   <head>
     <meta charset="UTF-8">
     
-   
+    <style>
+      body, html {
+        height: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      
+      * {
+        box-sizing: border-box;
+      }
+      
+      .bg-img {
+        /* The image used */
+        background-image: url("img_nature.jpg");
+      
+        min-height: 380px;
+      
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+      }
+      
+      /* Add styles to the form container */
+      .container {
+        position: absolute;
+        right: 0;
+        margin: 20px;
+        max-width: 300px;
+        padding: 16px;
+        background-color: white;
+      }
+      
+      /* Full-width input fields */
+      input[type=text], input[type=password] {
+        width: 100%;
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        border: none;
+        background: #f1f1f1;
+      }
+      
+      input[type=text]:focus, input[type=password]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+      
+      /* Set a style for the submit button */
+      .btn {
+        background-color: #04AA6D;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        opacity: 0.9;
+      }
+      
+      .btn:hover {
+        opacity: 1;
+      }
+      </style>
     <script>
         const { ipcRenderer } = require('electron');
         function writeKeyChain() {
@@ -16,8 +77,20 @@
   </head>
  
   <body>
-    <h4 style="margin: 1px 0px 3px; background: #efefef;border: 2px solid black;">Secert Key</h4>
-    <input type="text" id="keychain"/>
-    <input type="button" value="Save" onclick="writeKeyChain()" />
+    
+<h2>Welcome to Cyber Cafe - Secret Key Registration</h2>
+<div class="bg-img">
+  <form class="container">
+    <h1>Key Chain</h1>
+
+    <label for="email"><b>Secret Key</b></label>
+    <input type="text" placeholder="Secret Key" name="keychain" id="keychain" required>
+
+    <button  onclick="writeKeyChain()" type="button" class="btn">Unlock</button>
+  </form>
+</div>
+
+
+   
   </body>
 </html>
